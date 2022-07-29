@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="{% url 'polls:vote' question.id %}" method="post">  <!--action表示操作后访问地址-->
+    {% csrf_token %}
+    <fieldset>
+        <legend><h2>{{ question.question_text }}</h2></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% for choice in question.choice_set.all %}
+<!--这里使用forloop.counter表示循环此时，choice.id是所有问题共用的，所以部分问题的choice需要不是从1、2、3开始的-->
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        {{forloop.counter}}
+
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% endfor %}
+    </fieldset>
+    <input type="checkbox" name="vv1" value="bike" id="vv1-1">
+    <label for="vv1-1">{{ "hello" }}</label><br>
+    <input type="checkbox" name="vv1" value="car" id="vv1-2">
+    <label for="vv1-1">{{ "bad" }}</label><br>
+
+    <input type="submit" value="Vote">
+</form>
+</body>
+</html>
